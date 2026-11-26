@@ -12,41 +12,51 @@ public class GameScreen extends ScreenAdapter{
     private final KOPA game;
     private final Texture background;
 
-    private final Texture soldier;
+    private final Texture legs;
 
     float fireTimer = 0;
     static float FIRE_DURATION = 0.1f;
-    private final Texture soldierFire;
+    private final Texture upper;
 
+    float aimAngle = 10;
+    float aimSpeed = 60;
 
     public GameScreen(KOPA game){
         this.game = game;
         background = new Texture(Gdx.files.internal("background_lvl_1.jpg"));
-        soldier = new Texture(Gdx.files.internal("sitting.png"));
-        soldier.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        soldierFire = new Texture(Gdx.files.internal("firing.png"));
+        legs = new Texture(Gdx.files.internal("legs.png"));
+        legs.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        upper = new Texture(Gdx.files.internal("upper.png"));
+        upper.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
     public void update(float delta){
         if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && fireTimer <= -FIRE_DURATION){
             fireTimer = FIRE_DURATION ;
         }
         fireTimer -= delta*1.5f;
+
+        if(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A)){
+            aimAngle += aimSpeed*delta;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D)){
+            aimAngle -= aimSpeed*delta;
+        }
     }
     public void render(float delta){
         update(delta);
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.begin();
         game.batch.draw(background, 0, 0, 1280, 720);
-        if(fireTimer > 0) {
-            game.batch.draw(soldierFire, 100, 40, 200, 200);
-        }else{
-            game.batch.draw(soldier, 100, 40, 200, 200);
-        }
+
+        game.batch.draw(legs, 100, 40, 200, 200);
+        game.batch.draw(upper, 100, 40, 64, 74, 200, 200, 1, 1, aimAngle,
+            0, 0, upper.getWidth(), upper.getHeight(), false, false);
+
         game.batch.end();
     }
     public void dispose() {
         background.dispose();
-        soldier.dispose();
-        soldierFire.dispose();
+        legs.dispose();
+        upper.dispose();
     }
 }
