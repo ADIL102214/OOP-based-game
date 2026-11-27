@@ -22,7 +22,7 @@ public class Bullet {
         y += velocityY * delta;
     }
     void draw(SpriteBatch batch, Texture texture){
-        batch.draw(texture, x + 43, y + 42f, -43, -41, 80, 6, 1, 1, angle,
+        batch.draw(texture, x + 43, y + 42f, -43, -42, 80, 6, 1, 1, angle,
             0, 0, texture.getWidth(), texture.getHeight(), false, false);
     }
     boolean isOffScreen(){
