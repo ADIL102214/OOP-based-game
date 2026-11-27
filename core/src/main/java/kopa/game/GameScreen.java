@@ -32,10 +32,11 @@ public class GameScreen extends ScreenAdapter{
     }
 
     public void update(float delta){
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && fireTimer <= -FIRE_DURATION){
+        weapon.update(delta);
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && fireTimer <= -FIRE_DURATION && weapon.notEmpty()){
             fireTimer = FIRE_DURATION ;
             bullets.add(weapon.createBullet(164, 114, soldier.getAimAngle()));
-            weapon.playShotSound();
+            weapon.shoot();
         }
         fireTimer -= delta*1.5f;
         bullets.removeIf(b -> b.isOffScreen());

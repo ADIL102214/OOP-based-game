@@ -28,6 +28,10 @@ public class Soldier {
     }
 
     void draw(SpriteBatch batch, Weapon weapon, boolean firing){
+        if(weapon.isReloading()){
+            weapon.drawReload(batch, 100, 40);
+            return;
+        }
         batch.draw(legs, 100, 40, 200, 200);
         if(firing){
             batch.draw(weapon.getUpperFire(), 100, 40, 64, 74, 200, 200, 1, 1, aimAngle, 0, 0, weapon.getUpperFire().getWidth(), weapon.getUpperFire().getHeight(), false, false);
@@ -35,7 +39,6 @@ public class Soldier {
             batch.draw(weapon.getUpper(), 100, 40, 64, 74, 200, 200, 1, 1, aimAngle, 0, 0, weapon.getUpper().getWidth(), weapon.getUpper().getHeight(), false, false);
         }
     }
-
     public void dispose(){
         legs.dispose();
     }
