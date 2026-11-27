@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
+
 public class GameScreen extends ScreenAdapter{
     private final KOPA game;
     private final Texture background;
@@ -24,6 +26,10 @@ public class GameScreen extends ScreenAdapter{
     private final Texture upperFire;
 
     private final Sound sound;
+
+    Texture bulletTexture;
+    ArrayList<Bullet> bullets = new ArrayList<>();
+
     public GameScreen(KOPA game){
         this.game = game;
         background = new Texture(Gdx.files.internal("background_lvl_1.jpg"));
@@ -34,15 +40,17 @@ public class GameScreen extends ScreenAdapter{
         upperFire = new Texture(Gdx.files.internal("firing_upper_cut_final.png"));
         upperFire.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         sound = Gdx.audio.newSound(Gdx.files.internal("m4.mp3"));
+        bulletTexture = new Texture(Gdx.files.internal("bullet.png"));
     }
     public void update(float delta){
         if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && fireTimer <= -FIRE_DURATION){
             fireTimer = FIRE_DURATION ;
+            bullets.add(new Bullet(164, 114, aimAngle, 2000));
             long id = sound.play(1.0f);
             sound.setPitch(id, 3f);
         }
         fireTimer -= delta*1.5f;
-
+        bullets.removeIf(b -> b.isOffScreen());
         if(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A)){
             aimAngle += aimSpeed*delta;
         }
@@ -64,7 +72,10 @@ public class GameScreen extends ScreenAdapter{
             game.batch.draw(upper, 100, 40, 64, 74, 200, 200, 1, 1, aimAngle,
                 0, 0, upper.getWidth(), upper.getHeight(), false, false);
         }
-
+        for(Bullet bullet : bullets){
+            bullet.draw(game.batch, bulletTexture);
+            bullet.update(delta);
+        }
         game.batch.end();
     }
     public void dispose() {
@@ -73,5 +84,6 @@ public class GameScreen extends ScreenAdapter{
         upper.dispose();
         sound.dispose();
         upperFire.dispose();
+        bulletTexture.dispose();
     }
 }
