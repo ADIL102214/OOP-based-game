@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -22,6 +23,8 @@ public class GameScreen extends ScreenAdapter{
 
     Texture bulletTexture;
     ArrayList<Bullet> bullets = new ArrayList<>();
+
+    ArrayList<Enemy> enemies = new ArrayList<>();
 
     public GameScreen(KOPA game){
         this.game = game;
@@ -46,6 +49,12 @@ public class GameScreen extends ScreenAdapter{
         if(Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D)){
             soldier.aimDown(delta);
         }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
+            enemies.add(new Tier1(1300, MathUtils.random(10, 90)));
+        }
+        for(Enemy enemy : enemies){
+            enemy.update(delta);
+        }
     }
     public void render(float delta){
         update(delta);
@@ -58,6 +67,9 @@ public class GameScreen extends ScreenAdapter{
             bullet.draw(game.batch, bulletTexture);
             bullet.update(delta);
         }
+        for(Enemy enemy : enemies){
+            enemy.draw(game.batch);
+        }
         game.batch.end();
     }
     public void dispose() {
@@ -65,5 +77,8 @@ public class GameScreen extends ScreenAdapter{
         soldier.dispose();
         weapon.dispose();
         bulletTexture.dispose();
+        for(Enemy enemy : enemies){
+            enemy.dispose();
+        }
     }
 }
