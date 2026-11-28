@@ -39,7 +39,7 @@ public abstract class Weapon {
         reloadSheet = new Texture(Gdx.files.internal(reloadFile));
         reloadSheet.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion[][] frames = TextureRegion.split(reloadSheet, reloadSheet.getWidth()/6, reloadSheet.getHeight());
-        reloadAnimation = new Animation<>(reloadDuration / 6, frames[0]);
+        reloadAnimation = new Animation<>(reloadDuration / 5.1f, frames[0]);
     }
 
     Texture getUpper(){
@@ -82,7 +82,7 @@ public abstract class Weapon {
     }
 
     void drawReload(SpriteBatch batch, float x, float y){
-        TextureRegion frame = reloadAnimation.getKeyFrame((reloadDuration - reloadTimer)*3, false);
+        TextureRegion frame = reloadAnimation.getKeyFrame((reloadDuration - reloadTimer)*2.3f, false);
         batch.draw(frame, x, y, 200, 200);
     }
 

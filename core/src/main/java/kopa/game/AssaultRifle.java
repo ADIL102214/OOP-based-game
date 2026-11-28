@@ -2,7 +2,7 @@ package kopa.game;
 
 public class AssaultRifle extends Weapon{
     public AssaultRifle(){
-        super("upper.png", "firing_upper_cut_final.png","m4.mp3", 3, 30, 150, 1, "reload_sheet_transparent.png");
+        super("upper.png", "firing_upper_cut_final.png","m4.mp3", 3, 30, 150, 1.5f, "reload_sheet_aligned_6.png");
     }
     Bullet createBullet(float x, float y, float angle){
         return new Bullet(x, y, angle, 2000);
